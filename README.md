@@ -1,6 +1,3 @@
-Authors: Jiaying Liu, Pablo Perez, Ilia Lecha, Lluís Giménez
-
-Task Board: https://trello.com/b/3yEjjdTZ/task-board-tool
 
 # PVProtect
 
@@ -52,6 +49,19 @@ The users could interact with our software through an application. This applicat
 10. % energy from the solar panel that is consumed (should be as high as possible)
 11. % of energy that is sent to the electric network (should be as low as possible)
 12. Measure of the evolution of the performance of the panel.
+
+
+
+# Contact
+
+Authors: Jiaying Liu, Pablo Perez, Ilia Lecha, Lluís Giménez
+
+Mails: 
+
+Task Board: https://trello.com/b/3yEjjdTZ/task-board-tool
+
+
+
 
 
 
