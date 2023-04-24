@@ -2,8 +2,6 @@ Authors: Jiaying Liu, Pablo Perez, Ilia Lecha, Lluís Giménez
 
 Task Board: https://trello.com/b/3yEjjdTZ/task-board-tool
 
-PPT edition: https://www.canva.com/design/DAFgXmr9nEc/tYkshARUNMR__INu_TFzFw/edit?utm_content=DAFgXmr9nEc&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
-
 # PVProtect
 
 PVProtect is a new software that falls within the domain of renewable energy technology, to be more specific, within the area of solar panel technology. 
