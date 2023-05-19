@@ -1,0 +1,22 @@
+@startuml
+left to right direction
+actor "User" as fc
+actor "Sonda" as sc
+actor "Alarm" as ac
+actor "Electric Company" as ec
+actor "Database" as dc
+rectangle System {
+  usecase "Turn on/off" as UC1
+  usecase "Consult warning" as UC2
+  usecase "Monitorize" as UC3
+  usecase "Gathering real-time data" as UC4
+
+}
+fc --> UC1
+fc <-- UC2
+fc <-- UC3
+sc -up-> UC4
+ac -up-> UC4
+ec -up-> UC4
+dc <-down- UC3
+@enduml
