@@ -56,7 +56,7 @@ The users could interact with our software through an application. This applicat
 
 Authors: Jiaying Liu, Pablo Perez, Ilia Lecha, Lluís Giménez
 
-Mails: 
+Mails: liu.jiaying@alum.esci.upf.edu, pablo.perez@alum.esci.upf.edu, ilia.lecha@alum.esci.upf.edu, lluis.gimenez@alum.esci.upf.edu
 
 Task Board: https://trello.com/b/3yEjjdTZ/task-board-tool
 
