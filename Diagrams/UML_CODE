@@ -4,22 +4,39 @@ actor "User" as fc
 actor "Sonda" as sc
 actor "Alarm" as ac
 actor "Electric Company" as ec
-actor "Database" as dc
-rectangle System {
-  usecase "Turn on/off" as UC1
-  usecase "Consult warning" as UC2
-  usecase "Monitorize" as UC3
-  usecase "Gathering real-time data" as UC4
+actor "Power Inverter" as dc
 
+rectangle System {
+  usecase "Connect/disconnect panel." as UC1
+  usecase "Display energy production and consumption" as UC2
+  usecase "Calculate energy provided by panels" as UC3
+  usecase "Calculate energy provided by electric network" as UC4
+  usecase "Generate warnings" as UC5
+  usecase "Emergency button to disconnect the system" as UC6
+  usecase "Calculate savings" as UC7
+  usecase "On/Off racking" as UC8
+  usecase "Current activation status" as UC9
+  usecase "Calculate percentage of solar panel energy consumed" as UC10
+  usecase "Calculate percentage of energy sent to the electric network" as UC11
+  usecase "Performance tracking" as UC12
 }
 fc --> UC1
+dc --> UC1
 fc <-- UC2
-fc <-- UC3
-sc -up-> UC4
-ac -up-> UC4
+sc --> UC3
 ec -up-> UC4
-dc <-down- UC3
+sc --> UC5
+fc --> UC5
+ac --> UC6
+dc --> UC6
+fc --> UC7
+ec --> UC7
+fc --> UC8
+sc --> UC8
+fc --> UC9
+sc --> UC9
 @enduml
+
 
 ON/OFF activity diagram:
 @startuml
