@@ -20,3 +20,96 @@ ac -up-> UC4
 ec -up-> UC4
 dc <-down- UC3
 @enduml
+
+ON/OFF activity diagram:
+@startuml
+(*) --> if "" then
+  -->[Manually] "Check account"
+  --> "Enter Password"
+  if "" then 
+    -->[Not successful] "Forgot Password"
+    --> "Reset password"
+     if "" then
+      --> [Not successful] "Return to the initial page"
+    else
+      --> [Successful] "Click on the botton ON/OFF" as botton
+      --> "Security SMS"
+      endif
+      if "" then
+        --> [Received] "Enter security code"
+        if "" then 
+          -->[Correct] "Permission to turn ON/OFF"
+          --> ===B1===
+        else 
+          -->[Wrong] "Resend SMS" as resend
+        endif
+      else 
+        -->[Not received] resend
+      endif
+  else
+    -->[Successful] botton
+  endif
+else
+  -->[By the system] "Check safety status of the panel (fire)"
+  if "" then
+    -->[Yes] "TURN OFF" as off
+    --> ===B1===
+  else 
+    -->[No] "Check Battery status"
+    if "" then
+      -->[Battery>80%] off
+    else 
+      -->[Battery<80%] "Check consumption vs production balance"
+      if "" then
+        -->[Consumption<Production] off
+      else
+        -->[Consumption>Production] "Check panel efficiency"
+        if "" then
+          -->[<40%] off
+        else
+          -->[>40%] "TURN ON"
+          --> ===B1===
+          --> (*)
+@enduml
+
+ON/OFF sequence diagram:
+@startuml
+actor Customer
+participant APP
+participant System
+
+hnote across: Manually
+Customer -> APP: Check account
+activate APP
+activate Customer
+APP -> Customer: Request Password
+Customer -> APP: Enter password
+APP -> System: Verify password
+activate System
+return ok
+APP -> Customer: Log in succussful
+Customer -> APP:  Botton ON/OFF
+APP -> Customer: Request security SMS
+APP -> System: Send SMS to the customer
+activate System
+deactivate APP
+System -> Customer: Send SMS
+Customer -> APP: Enter SMS
+activate APP
+APP -> System: Request permission
+System -->APP: ok
+deactivate System
+APP -> Customer: Permission to turn ON/OFF
+deactivate Customer
+deactivate APP
+hnote across: By the system
+APP -> System: Check safety status (fire)
+activate APP
+activate System
+APP -> System: Check battery status
+APP -> System: Check consumption vs production balance
+APP -> System: Check efficiency
+System --> APP: TURN ON/OFF (according to the requirements)
+deactivate APP 
+deactivate System
+@enduml
