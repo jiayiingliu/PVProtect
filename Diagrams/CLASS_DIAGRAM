@@ -1,0 +1,93 @@
+@startuml
+class PVPanel {
+  - production: float
+  - efficiency: float
+  - status: boolean
+  + calculateProduction(): float
+  + updateStatus(): void
+  + calculateEfficiency(): float
+}
+
+class Battery {
+  - capacity: float
+  - current_charge: float
+  - status: boolean
+  + chargeBattery(amount: float): void
+  + dischargeBattery(amount: float): void
+  + calculate_currentBatery(amount: float): void
+  + updateStatus(): void
+}
+
+class EnergyConsumption {
+  - consumption: float
+  + updateConsumption(amount: float): void
+}
+
+class EnergyProduction {
+  - production: float
+  + updateProduction(amount: float): void
+}
+
+class PanelController {
+  + activatePanel(): void
+  + deactivatePanel(): void
+}
+
+class DataLogger {
+  - mainLogger: Logger
+  + GetLogger(): Logger
+  + LogWarning(text: string)
+  + LogError(text: string)
+  + logData(data: string): void
+}
+
+class UserInterface {
+  + displayInfo(): void
+  + performAction(action: string): void
+}
+
+class EfficiencyAnalyzer {
+  + analyze(): void
+}
+
+class DustDetector {
+  + detectDust(): void
+}
+
+class FireDetector {
+  + detectFire(): void
+}
+
+class NetworkInterface {
+  + sendNotification(message: string): void
+}
+
+class ConfigurationManager {
+  + manageConfig(): void
+}
+
+class MonitoringDevice {
+  + optimize()
+  + decisionMaking(): boolean
+  + sendWarningDust(): String
+  + sendWarningFire(): String
+}
+
+class MonitoringDevice_Model {
+  - title: String
+}
+
+MonitoringDevice "1" -- "1" Battery
+EnergyConsumption "1" -- "1" MonitoringDevice
+EnergyProduction "1" -- "1" MonitoringDevice
+PVPanel "1" -- "1" PanelController
+DataLogger "1" -- "1" MonitoringDevice
+UserInterface "1" -- "1" MonitoringDevice
+EfficiencyAnalyzer "1" -- "1" MonitoringDevice
+DustDetector "1" -- "1" MonitoringDevice
+FireDetector "1" -- "1" MonitoringDevice
+NetworkInterface "1" -- "1" MonitoringDevice
+ConfigurationManager "1" -- "1" MonitoringDevice
+MonitoringDevice "1" -- "1" PanelController
+MonitoringDevice_Model "1" -- "1" MonitoringDevice
+@enduml
