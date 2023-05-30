@@ -35,7 +35,6 @@ Nowadays, people or companies who use solar panels have increased a lot, since i
 - It could adapt to any type of users according to their necessity.
 - Save money
 
-
 The users could interact with our software through an application. This application provides the following services:
 1. Button to connect and disconnect the panel: the users could connect and disconnect by a click when necessary. This is not recommended since our software will make accurate decisions automatically to maximize self consumption as mentioned before.
 2. Data about how much energy is produced by the panels and how much is consumed.
@@ -49,8 +48,6 @@ The users could interact with our software through an application. This applicat
 10. % energy from the solar panel that is consumed (should be as high as possible)
 11. % of energy that is sent to the electric network (should be as low as possible)
 12. Measure of the evolution of the performance of the panel.
-
-
 
 # Contact
 
