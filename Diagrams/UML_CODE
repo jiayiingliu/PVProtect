@@ -36,38 +36,141 @@ sc --> UC8
 fc --> UC9
 sc --> UC9
 @enduml
-
-
-ON/OFF activity diagram:
+__________________________________________________________________________________________
+ACTIVITY DIAGRAMS
+A1.Interactions between users-application
+code:
 @startuml
-(*) --> if "" then
-  -->[Manually] "Check account"
-  --> "Enter Password"
-  if "" then 
-    -->[Not successful] "Forgot Password"
-    --> "Reset password"
-     if "" then
-      --> [Not successful] "Return to the initial page"
-    else
-      --> [Successful] "Click on the botton ON/OFF" as botton
-      --> "Security SMS"
-      endif
-      if "" then
-        --> [Received] "Enter security code"
-        if "" then 
-          -->[Correct] "Permission to turn ON/OFF"
-          --> ===B1===
+title A1.Interactions between users-application
+(*) --> "Access to the APP" as Access
+     if "Have account?" then
+       -->[No] "Display Sign up screen"
+       --> "Fill create account form"
+       --> "Validate e-mail"
+       --> "Send verification"
+        if "" then
+          -->[No successful] "Resend verification"
+           if "" then
+             -->[No successful (3 times)] "ERROR"
+             --> Access
+           else
+             -->[Successful] "Validate phone number" as number
+           endif
+        else
+          -->[Successful] number
+          --> "Send SMS verification" as Verification
+           if "" then
+             -->[No successful] "Resend SMS verification"
+              if "" then 
+                -->[No succesful (3 times)] "ERROR"
+              else
+                -->[Successful] "Display Home screen" as Home
+                endif
+           else 
+             -->[Successful] Home
+             --> "Choose windows"
+           endif
+              if "" then
+                -->[ON/OFF] "Click turn ON/OFF window"
+                --> "A1.1"
+                --> ===B1===
+              else
+                -->[Statistics] "Click Statistics(Production,consumption,efficiency and money saved) window"
+                -->"A1.2"
+                --> ===B1===
+                -->(*)
+              endif
+              endif
+     else
+       -->[Yes] "Display Log in screen"
+       --> "Check account"
+       --> "Enter password"
+        if "" then
+          -->[No successful] "Forgot password"
+          --> Verification
+        else
+          -->[Successful] Home
+@enduml
+-----------------------------------------------------------------------------------------------
+A1.1 Turn ON/OFF (Application)
+code:
+@startuml
+title A1.1 Turn ON/OFF
+(*) --> "Log in/Sign up(A1)"
+    --> "Display Home screen" as home
+    --> "Select the Turn On/Off window"
+    --> "Click on the botton of ON/OFF" as botton
+    --> "Request security SMS"
+    --> "Enter security code"
+     if "" then 
+       -->[No successful] "Resend SMS"
+       if "" then
+         --> [No successful(3 times)] home
+       else
+         -->[Successful] "Permission to turn ON/OFF" as turn
+       endif
+        if "" then
+          -->[ON] "Turn ON" 
+          --> ==B1== 
+          if "There is an error?" then
+            -->[Yes] "Restart the APP"
+            if "Is the error resolved?" then
+              --> [No] "Call technical support"
+              --> "Exit APP" as exit
+              -->(*)
+            else
+              --> [Yes] exit
+            endif
+          else
+            -->[No] exit
+          endif
         else 
-          -->[Wrong] "Resend SMS" as resend
+          -->[OFF] "Turn OFF"
+          --> ==B1==
         endif
-      else 
-        -->[Not received] resend
-      endif
-  else
-    -->[Successful] botton
-  endif
-else
-  -->[By the system] "Check safety status of the panel (fire)"
+     else
+       -->[Successful] turn
+@enduml
+------------------------------------------------------------------------------------------------
+A1.2 Statistical data query
+code:
+@startuml
+title A1.2 Statistical data query
+(*) --> "Log in/Sign up(A1)"
+    --> " Display Home screen" as home
+    --> "Click on the Statistics window"
+    --> "Select the type of data: Production,Consumption,Efficiency,Status of the panel, Hours of panel turn on/off or Saved money"
+    --> "Request security SMS"
+    --> "Enter security code"
+     if "" then 
+       -->[No successful] "Resend SMS"
+       if "" then
+         --> [No successful(3 times)] home
+       else
+         -->[Successful] "Permission to access selected statistics" as sta
+       endif
+         if "There is an error?" then
+           -->[Yes] "Restart the APP"
+           if "Error resolved?" then
+             --> [No] "Call technical support"
+             --> "Exit APP" as exit
+             -->(*)
+           else 
+             -->[Yes] "Take a look of the data" as data
+           endif
+        else 
+          -->[No] data
+          --> exit
+        endif
+     else
+       -->[Succesful] sta
+@enduml
+------------------------------------------------------------------------------------------------
+A2. Turn ON/OFF by the system
+code:
+@startuml
+title A2.Turn ON/OFF by the system
+(*) --> "Check safety status of the panel (fire)"
   if "" then
     -->[Yes] "TURN OFF" as off
     --> ===B1===
@@ -88,45 +191,142 @@ else
           --> ===B1===
           --> (*)
 @enduml
-
-ON/OFF sequence diagram:
+________________________________________________________________________________________________
+SEQUENCE DIAGRAMS
+S1: Sign up to the APP
+code:
 @startuml
+title S1: Sign up to the APP
 actor Customer
 participant APP
-participant System
+participant CentralServer
 
-hnote across: Manually
-Customer -> APP: Check account
+Customer-> APP: Click on Sign up botton
+activate APP
+activate Customer 
+Customer->APP: Fill registration form
+deactivate Customer
+activate CentralServer
+APP->CentralServer: Save information
+APP->CentralServer: Create account
+activate Customer
+APP -> Customer: Verify account e-mail
+APP -> CentralServer: Send e-mail verification to the customer
+deactivate APP
+CentralServer -> Customer: Send e-mail verification
+Customer -> CentralServer: Verify e-mail successfully
+activate APP
+APP -> Customer: Message "E-mail verified successfully "
+APP -> Customer: Verify account phone number
+APP -> CentralServer: Send SMS verification to the customer
+deactivate APP
+CentralServer -> Customer: Send SMS verification
+Customer -> CentralServer: Verify phone number successfully
+activate APP
+APP -> Customer: Message "Phone number verified successfully "
+APP -> Customer: Message "Your account was create successfully"
+Customer -> APP: Click on the Home screen
+@enduml
+-----------------------------------------------------------------------------------------------
+S2: Log in APP
+code:
+@startuml
+title S2: Log in APP
+actor Customer
+participant APP
+participant CentralServer
+
+Customer -> APP: Log in account
 activate APP
 activate Customer
 APP -> Customer: Request Password
 Customer -> APP: Enter password
-APP -> System: Verify password
-activate System
+APP -> CentralServer: Verify password
+activate CentralServer
 return ok
-APP -> Customer: Log in succussful
-Customer -> APP:  Botton ON/OFF
-APP -> Customer: Request security SMS
-APP -> System: Send SMS to the customer
-activate System
+APP -> Customer: Log in successful
+Customer ->APP: Click on the home screen
 deactivate APP
-System -> Customer: Send SMS
+deactivate Customer
+@enduml
+------------------------------------------------------------------------------------------------
+S3: Turn ON/OFF through APP
+code:
+@startuml
+title S3: Turn ON/OFF through APP
+actor Customer
+participant APP
+participant CentralServer
+
+activate Customer
+activate APP
+Customer -> APP: Log in/ sign up account
+Customer -> APP: Click on the Home screen
+Customer -> APP: Click on the ON/OFF window
+APP -> Customer: Request security SMS
+APP -> CentralServer: Send SMS to the customer
+activate CentralServer
+deactivate APP
+CentralServer -> Customer: Send SMS
 Customer -> APP: Enter SMS
 activate APP
-APP -> System: Request permission
-System -->APP: ok
-deactivate System
+APP -> CentralServer: Request permission
+CentralServer -->APP: ok
+deactivate CentralServer
 APP -> Customer: Permission to turn ON/OFF
 deactivate Customer
 deactivate APP
-hnote across: By the system
-APP -> System: Check safety status (fire)
-activate APP
-activate System
-APP -> System: Check battery status
-APP -> System: Check consumption vs production balance
-APP -> System: Check efficiency
-System --> APP: TURN ON/OFF (according to the requirements)
-deactivate APP 
-deactivate System
 @enduml
+------------------------------------------------------------------------------------------------
+S4: Access to the statistics of the panel through APP
+code:
+@startuml
+title S4: Access to the Statistics of the panel through APP
+actor Customer
+participant APP
+participant CentralServer
+
+activate Customer
+activate APP
+Customer -> APP: Log in/ sign up account
+Customer -> APP: Click on the Home screen
+Customer -> APP: Click on the Statistics window
+Customer -> APP: Select the type of data: Production,Consumption,Efficiency,Status of the panel, Hours of panel turn on/off or Saved money
+APP -> Customer: Request security SMS
+APP -> CentralServer: Send SMS to the customer
+activate CentralServer
+deactivate APP
+CentralServer -> Customer: Send SMS
+Customer -> APP: Enter SMS
+activate APP
+APP -> CentralServer: Request permission
+CentralServer -->APP: ok
+deactivate CentralServer
+APP -> Customer: Permission to access selected statistics
+deactivate Customer
+deactivate APP
+@enduml
+------------------------------------------------------------------------------------------------
+S5: Turn ON/OFF automatically
+code:
+@startuml
+title S5: Turn ON/OFF by the system
+actor Customer
+participant APP
+participant CentralControl
+
+APP ->  CentralControl: Check safety status (fire)
+activate APP
+activate  CentralControl
+APP ->  CentralControl: Check battery status
+APP ->  CentralControl: Check consumption vs production balance
+APP ->  CentralControl: Check efficiency
+CentralControl --> APP: TURN ON/OFF (according to the requirements)
+activate Customer
+APP-> Customer: Message "The Panel Solar was turn ON/OFF to maximize self-conseumption"
+deactivate Customer
+deactivate APP 
+deactivate CentralControl
+@enduml
+
+
