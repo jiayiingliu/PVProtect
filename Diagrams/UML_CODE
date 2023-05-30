@@ -8,16 +8,16 @@ actor "Power Inverter" as dc
 
 rectangle System {
   usecase "Connect/disconnect panel." as UC1
-  usecase "Display energy production and consumption" as UC2
-  usecase "Calculate energy provided by panels" as UC3
-  usecase "Calculate energy provided by electric network" as UC4
-  usecase "Generate warnings" as UC5
-  usecase "Emergency button to disconnect the system" as UC6
+  usecase "Energy production and consumption display" as UC2
+  usecase "Solar panel energy calculation" as UC3
+  usecase "Electric network energy calculation" as UC4
+  usecase "Warning generation" as UC5
+  usecase "Emergency system disconnect button" as UC6
   usecase "Calculate savings" as UC7
   usecase "On/Off racking" as UC8
   usecase "Current activation status" as UC9
-  usecase "Calculate percentage of solar panel energy consumed" as UC10
-  usecase "Calculate percentage of energy sent to the electric network" as UC11
+  usecase "Solar panel energy consumption percentage calculation" as UC10
+  usecase "Energy sent to electric network percentage calculation" as UC11
   usecase "Performance tracking" as UC12
 }
 fc --> UC1
