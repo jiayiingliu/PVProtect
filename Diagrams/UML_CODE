@@ -7,8 +7,8 @@ actor "Electric Company" as ec
 actor "Power Inverter" as dc
 
 rectangle System {
-  usecase "Connect/disconnect panel." as UC1
   usecase "Energy production and consumption display" as UC2
+  usecase "Connect/disconnect panel." as UC1
   usecase "Solar panel energy calculation" as UC3
   usecase "Electric network energy calculation" as UC4
   usecase "Warning generation" as UC5
@@ -16,25 +16,27 @@ rectangle System {
   usecase "Calculate savings" as UC7
   usecase "On/Off racking" as UC8
   usecase "Current activation status" as UC9
-  usecase "Solar panel energy consumption percentage calculation" as UC10
   usecase "Energy sent to electric network percentage calculation" as UC11
   usecase "Performance tracking" as UC12
+  (UC3) .> (UC11) : include
+  (UC3) .> (UC12) : include
+
 }
 fc --> UC1
-dc --> UC1
+dc -up-> UC1
 fc <-- UC2
-sc --> UC3
+sc -up-> UC3
 ec -up-> UC4
-sc --> UC5
+sc -up-> UC5
 fc --> UC5
 ac --> UC6
-dc --> UC6
+dc -up-> UC6
 fc --> UC7
-ec --> UC7
+ec -up-> UC7
 fc --> UC8
-sc --> UC8
+sc -up-> UC8
 fc --> UC9
-sc --> UC9
+sc -up-> UC9
 @enduml
 __________________________________________________________________________________________
 ACTIVITY DIAGRAMS
