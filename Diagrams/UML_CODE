@@ -98,75 +98,57 @@ A1.1 Turn ON/OFF (Application)
 code:
 @startuml
 title A1.1 Turn ON/OFF
-(*) --> "Log in/Sign up(A1)"
+(*) --> "Log in/Sign up"
+    note right: This action need to be verified previously using A1 diagram
     --> "Display Home screen" as home
     --> "Select the Turn On/Off window"
     --> "Click on the botton of ON/OFF" as botton
-    --> "Request security SMS"
-    --> "Enter security code"
-     if "" then 
-       -->[No successful] "Resend SMS"
-       if "" then
-         --> [No successful(3 times)] home
+     if "" then
+       -->[ON] "Turn ON" 
+       --> ==B1== 
+       if "There is an error?" then
+         -->[Yes] "Restart the APP"
+         if "Is the error resolved?" then
+           --> [No] "Call technical support"
+           --> "Exit APP" as exit
+           -->(*)
+         else
+           --> [Yes] exit
+         endif
        else
-         -->[Successful] "Permission to turn ON/OFF" as turn
+         -->[No] exit
        endif
-        if "" then
-          -->[ON] "Turn ON" 
-          --> ==B1== 
-          if "There is an error?" then
-            -->[Yes] "Restart the APP"
-            if "Is the error resolved?" then
-              --> [No] "Call technical support"
-              --> "Exit APP" as exit
-              -->(*)
-            else
-              --> [Yes] exit
-            endif
-          else
-            -->[No] exit
-          endif
-        else 
-          -->[OFF] "Turn OFF"
-          --> ==B1==
-        endif
-     else
-       -->[Successful] turn
+     else 
+       -->[OFF] "Turn OFF"
+       --> ==B1==
+     endif
 @enduml
 ------------------------------------------------------------------------------------------------
 A1.2 Statistical data query
 code:
 @startuml
 title A1.2 Statistical data query
-(*) --> "Log in/Sign up(A1)"
+(*) --> "Log in/Sign up"
+    note right: This action need to be verified previously using A1 diagram
     --> " Display Home screen" as home
     --> "Click on the Statistics window"
     --> "Select the type of data: Production,Consumption,Efficiency,Status of the panel, Hours of panel turn on/off or Saved money"
-    --> "Request security SMS"
-    --> "Enter security code"
-     if "" then 
-       -->[No successful] "Resend SMS"
-       if "" then
-         --> [No successful(3 times)] home
-       else
-         -->[Successful] "Permission to access selected statistics" as sta
+    --> "Access to the selected data"    
+     if "There is an error?" then
+       -->[Yes] "Restart the APP"
+       if "Error resolved?" then
+         --> [No] "Call technical support"
+         --> "Exit APP" as exit
+         -->(*)
+       else 
+         -->[Yes] "Take a look of the data" as data
        endif
-         if "There is an error?" then
-           -->[Yes] "Restart the APP"
-           if "Error resolved?" then
-             --> [No] "Call technical support"
-             --> "Exit APP" as exit
-             -->(*)
-           else 
-             -->[Yes] "Take a look of the data" as data
-           endif
-        else 
-          -->[No] data
-          --> exit
-        endif
-     else
-       -->[Succesful] sta
+     else 
+       -->[No] data
+       --> exit
+     endif
 @enduml
+
 ------------------------------------------------------------------------------------------------
 A2. Turn ON/OFF by the system
 code:
@@ -213,21 +195,31 @@ APP->CentralServer: Save information
 APP->CentralServer: Create account
 activate Customer
 APP -> Customer: Verify account e-mail
-APP -> CentralServer: Send e-mail verification to the customer
+APP -> CentralServer: Request e-mail verification 
+CentralServer -> CommunicationCompany: Request e-mail verification 
+activate CommunicationCompany
 deactivate APP
-CentralServer -> Customer: Send e-mail verification
+deactivate CentralServer
+CommunicationCompany -> Customer: Send e-mail verification
 Customer -> CentralServer: Verify e-mail successfully
+activate CentralServer
 activate APP
 APP -> Customer: Message "E-mail verified successfully "
 APP -> Customer: Verify account phone number
-APP -> CentralServer: Send SMS verification to the customer
+APP -> CentralServer: Request SMS verification to the customer
 deactivate APP
-CentralServer -> Customer: Send SMS verification
+CentralServer -> CommunicationCompany: request SMS verification
+deactivate CentralServer
+CommunicationCompany -> Customer: Send SMS verification
+activate CentralServer
 Customer -> CentralServer: Verify phone number successfully
 activate APP
+deactivate CentralServer
 APP -> Customer: Message "Phone number verified successfully "
 APP -> Customer: Message "Your account was create successfully"
 Customer -> APP: Click on the Home screen
+deactivate APP
+Deactivate Customer
 @enduml
 -----------------------------------------------------------------------------------------------
 S2: Log in APP
@@ -251,6 +243,7 @@ Customer ->APP: Click on the home screen
 deactivate APP
 deactivate Customer
 @enduml
+
 ------------------------------------------------------------------------------------------------
 S3: Turn ON/OFF through APP
 code:
@@ -265,13 +258,6 @@ activate APP
 Customer -> APP: Log in/ sign up account
 Customer -> APP: Click on the Home screen
 Customer -> APP: Click on the ON/OFF window
-APP -> Customer: Request security SMS
-APP -> CentralServer: Send SMS to the customer
-activate CentralServer
-deactivate APP
-CentralServer -> Customer: Send SMS
-Customer -> APP: Enter SMS
-activate APP
 APP -> CentralServer: Request permission
 CentralServer -->APP: ok
 deactivate CentralServer
