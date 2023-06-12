@@ -316,5 +316,128 @@ deactivate Customer
 deactivate APP 
 deactivate CentralControl
 @enduml
+------------------------------------------------------------------------------------------------
+Class Diagram
+code:
+@startuml
+!theme mars
+namespace system.WebServer {
+
+class PublicServerEntrance{
+ + CONST: ReceiveData
+}
+
+class WebServerManager{
+  - mainLogger: Logger
+  + GetLogger(): Logger
+  + LogWarning(text: string)
+  + LogError(text: string)
+  + logData(data: string): void
+  + configurateServer()
+  + enableConnection()
+}
+
+class Computations{
+  + CONST: CalculateTime
+  + energyMean() : int
+  + questionDB()
+  + responseDB()
+  + sendDataWebServerManager()
+  + MoneySaved(): float
+  + MoneySentElectricGrid(): float
+  + OverallConsumptionMonth(): float
+  + OverallProductionMonth(): float
+}
+
+class UserInterface {
+  + displayInfo(): void
+  + performAction(action: string): void
+}
+
+class Database {
+  + saveData(data: string): void
+  + getID(): float
+}
+}
+
+namespace system.MonitoringDevice {
+
+class PanelController {
+  + getID(): float
+  + activatePanel(): void
+  + deactivatePanel(): void
+}
+class Battery {
+  - capacity: float
+  - current_charge: float
+  - status: boolean
+  + chargeBattery(amount: float): void
+  + dischargeBattery(amount: float): void
+  + calculate_currentBatery(amount: float): void
+  + updateStatus(): void
+}
+class ElectricSensor {
+  - voltage : float
+  + getElectricData(): float
+  - status: boolean
+  + updateStatus(): void
+
+}
+class FireDetector {
+  + detectFire(): void
+  + updateStatus(): void
+  - status: boolean
+}
+class DataGather {
+  + receiveElectricData(data: ElectricData): void
+  + receiveDustData(data: DustData): void
+  + receiveFireAlarmData(alarm: FireAlarmData): void
+  + receiveBatteryData(data: BatteryData): void
+  + CONST: Pulltime
+}
+class MonitoringDevice {
+  - ID: float
+}
+
+class EnergyHistory{
+  - production: float
+  + updateProduction(amount: float): void
+  - consumption: float
+  + updateConsumption(amount: float): void
+  + CONST : SendTime
+  + CONST : SaveTime
+
+}
+
+class ServerProxy{
+  + CONST : SendTime
+  + pullData(): string
+  + sendData(): string
+}
+
+class DustDetector {
+  + detectDust(): void
+  - status: boolean
+  + updateStatus(): void
+}
+DataGather "1" --* "1" MonitoringDevice  : composition
+DataGather "1" --* "1" EnergyHistory : composition
+EnergyHistory "1" --o "1" MonitoringDevice
+DustDetector "*" <--o "1" DataGather : aggregation
+MonitoringDevice "1" *-- "1" PanelController : composition
+FireDetector "*" <--o "1" DataGather : aggregation
+PanelController "1" ..> "1" DataGather : informs
+PanelController "1" ..> "1" EnergyHistory
+Battery "*" <--o "1" DataGather : aggregation
+ElectricSensor "1" <--o "1" DataGather : aggregation
+PanelController "1" <.. "1" ServerProxy
+PublicServerEntrance "1" ..> "1" ServerProxy
+PublicServerEntrance "*" -.-> "1" Database
+WebServerManager "1" o--> "1" UserInterface : aggregation
+WebServerManager "1" o-- "1" Database : aggregation
+WebServerManager "1" o-- "1" Computations : aggregation
+
+}
+@enduml
 
 
