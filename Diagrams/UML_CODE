@@ -1,3 +1,4 @@
+USE CASE DIAGRAM
 @startuml
 left to right direction
 actor "User" as fc
@@ -38,13 +39,13 @@ sc -up-> UC8
 fc --> UC9
 sc -up-> UC9
 @enduml
-__________________________________________________________________________________________
+_____________________________________________________________________________________________________________________________________
 ACTIVITY DIAGRAMS
 A1.Interactions between users-application
 code:
 @startuml
-title A1.Interactions between users-application
-(*) --> "Access to the APP" as Access
+title A1.Interactions between users-web/application
+(*) --> "Access to the Web/APP" as Access
      if "Have account?" then
        -->[No] "Display Sign up screen"
        --> "Fill create account form"
@@ -93,11 +94,11 @@ title A1.Interactions between users-application
         else
           -->[Successful] Home
 @enduml
------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------
 A1.1 Turn ON/OFF (Application)
 code:
 @startuml
-title A1.1 Turn ON/OFF
+title A1.1 Turn ON/OFF through Web/Application
 (*) --> "Log in/Sign up"
     note right: This action need to be verified previously using A1 diagram
     --> "Display Home screen" as home
@@ -107,10 +108,10 @@ title A1.1 Turn ON/OFF
        -->[ON] "Turn ON" 
        --> ==B1== 
        if "There is an error?" then
-         -->[Yes] "Restart the APP"
+         -->[Yes] "Restart the Web/APP"
          if "Is the error resolved?" then
            --> [No] "Call technical support"
-           --> "Exit APP" as exit
+           --> "Exit Web/APP" as exit
            -->(*)
          else
            --> [Yes] exit
@@ -123,7 +124,7 @@ title A1.1 Turn ON/OFF
        --> ==B1==
      endif
 @enduml
-------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------
 A1.2 Statistical data query
 code:
 @startuml
@@ -135,7 +136,7 @@ title A1.2 Statistical data query
     --> "Select the type of data: Production,Consumption,Efficiency,Status of the panel, Hours of panel turn on/off or Saved money"
     --> "Access to the selected data"    
      if "There is an error?" then
-       -->[Yes] "Restart the APP"
+       -->[Yes] "Restart the WebAPP"
        if "Error resolved?" then
          --> [No] "Call technical support"
          --> "Exit APP" as exit
@@ -148,8 +149,7 @@ title A1.2 Statistical data query
        --> exit
      endif
 @enduml
-
-------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------
 A2. Turn ON/OFF by the system
 code:
 @startuml
@@ -175,149 +175,142 @@ title A2.Turn ON/OFF by the system
           --> ===B1===
           --> (*)
 @enduml
-________________________________________________________________________________________________
+____________________________________________________________________________________________________________________________________
 SEQUENCE DIAGRAMS
 S1: Sign up to the APP
 code:
 @startuml
 title S1: Sign up to the APP
 actor Customer
-participant APP
+participant WebAPP
 participant CentralServer
 
-Customer-> APP: Click on Sign up botton
-activate APP
+Customer-> WebAPP: Click on Sign up botton
+activate WebAPP
 activate Customer 
-Customer->APP: Fill registration form
+Customer->WebAPP: Fill registration form
 deactivate Customer
 activate CentralServer
-APP->CentralServer: Save information
-APP->CentralServer: Create account
+WebAPP->CentralServer: Save information
+WebAPP->CentralServer: Create account
 activate Customer
-APP -> Customer: Verify account e-mail
-APP -> CentralServer: Request e-mail verification 
+WebAPP -> Customer: Verify account e-mail
+WebAPP -> CentralServer: Request e-mail verification 
 CentralServer -> CommunicationCompany: Request e-mail verification 
 activate CommunicationCompany
-deactivate APP
+deactivate WebAPP
 deactivate CentralServer
 CommunicationCompany -> Customer: Send e-mail verification
 Customer -> CentralServer: Verify e-mail successfully
 activate CentralServer
-activate APP
-APP -> Customer: Message "E-mail verified successfully "
-APP -> Customer: Verify account phone number
-APP -> CentralServer: Request SMS verification to the customer
-deactivate APP
+activate WebAPP
+WebAPP -> Customer: Message "E-mail verified successfully "
+WebAPP -> Customer: Verify account phone number
+WebAPP -> CentralServer: Request SMS verification to the customer
+deactivate WebAPP
 CentralServer -> CommunicationCompany: request SMS verification
 deactivate CentralServer
 CommunicationCompany -> Customer: Send SMS verification
 activate CentralServer
 Customer -> CentralServer: Verify phone number successfully
-activate APP
+activate WebAPP
 deactivate CentralServer
-APP -> Customer: Message "Phone number verified successfully "
-APP -> Customer: Message "Your account was create successfully"
-Customer -> APP: Click on the Home screen
-deactivate APP
+WebAPP -> Customer: Message "Phone number verified successfully "
+WebAPP -> Customer: Message "Your account was create successfully"
+Customer -> WebAPP: Click on the Home screen
+deactivate WebAPP
 Deactivate Customer
 @enduml
------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------
 S2: Log in APP
 code:
 @startuml
-title S2: Log in APP
+title S2: Log in Web/APP
 actor Customer
-participant APP
+participant WebAPP
 participant CentralServer
 
-Customer -> APP: Log in account
-activate APP
+Customer -> WebAPP: Log in account
+activate WebAPP
 activate Customer
-APP -> Customer: Request Password
-Customer -> APP: Enter password
-APP -> CentralServer: Verify password
+WebAPP -> Customer: Request Password
+Customer -> WebAPP: Enter password
+WebAPP -> CentralServer: Verify password
 activate CentralServer
 return ok
-APP -> Customer: Log in successful
-Customer ->APP: Click on the home screen
-deactivate APP
+WebAPP -> Customer: Log in successful
+Customer ->WebAPP: Click on the home screen
+deactivate WebAPP
 deactivate Customer
 @enduml
-
-------------------------------------------------------------------------------------------------
-S3: Turn ON/OFF through APP
+---------------------------------------------------------------------------------------------------------------------------------------------------
+S3: Turn ON/OFF through Web/APP
 code:
 @startuml
-title S3: Turn ON/OFF through APP
+title S3: Turn ON/OFF through WebAPP
 actor Customer
-participant APP
+participant WebAPP
 participant CentralServer
 
 activate Customer
-activate APP
-Customer -> APP: Log in/ sign up account
-Customer -> APP: Click on the Home screen
-Customer -> APP: Click on the ON/OFF window
-APP -> CentralServer: Request permission
-CentralServer -->APP: ok
+activate WebAPP
+Customer -> WebAPP: Log in/ sign up account
+Customer -> WebAPP: Click on the Home screen
+Customer -> WebAPP: Click on the ON/OFF window
+WebAPP -> CentralServer: Request permission
+CentralServer -->WebAPP: ok
 deactivate CentralServer
-APP -> Customer: Permission to turn ON/OFF
+WebAPP -> Customer: Permission to turn ON/OFF
 deactivate Customer
-deactivate APP
+deactivate WebAPP
 @enduml
-------------------------------------------------------------------------------------------------
-S4: Access to the statistics of the panel through APP
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+S4: Access to the statistics of the panel through Web/APP
 code:
 @startuml
-title S4: Access to the Statistics of the panel through APP
+title S4: Access to the Statistics of the panel through Web-APP
 actor Customer
-participant APP
+participant WebAPP
 participant CentralServer
 
 activate Customer
-activate APP
-Customer -> APP: Log in/ sign up account
-Customer -> APP: Click on the Home screen
-Customer -> APP: Click on the Statistics window
-Customer -> APP: Select the type of data: Production,Consumption,Efficiency,Status of the panel, Hours of panel turn on/off or Saved money
-APP -> Customer: Request security SMS
-APP -> CentralServer: Send SMS to the customer
-activate CentralServer
-deactivate APP
-CentralServer -> Customer: Send SMS
-Customer -> APP: Enter SMS
-activate APP
-APP -> CentralServer: Request permission
-CentralServer -->APP: ok
+activate WebAPP
+Customer -> WebAPP: Log in/ sign up account
+Customer -> WebAPP: Click on the Home screen
+Customer -> WebAPP: Click on the Statistics window
+Customer -> WebAPP: Select the type of data: Production,Consumption,Efficiency,Status of the panel, Hours of panel turn on/off or Saved money
+WebAPP -> CentralServer: Request permission
+CentralServer -->WebAPP: ok
 deactivate CentralServer
-APP -> Customer: Permission to access selected statistics
+WebAPP -> Customer: Permission to access selected statistics
 deactivate Customer
-deactivate APP
+deactivate WebAPP
 @enduml
-------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------------
 S5: Turn ON/OFF automatically
 code:
 @startuml
 title S5: Turn ON/OFF by the system
 actor Customer
-participant APP
+participant WebAPP
 participant CentralControl
 
-APP ->  CentralControl: Check safety status (fire)
-activate APP
+WebAPP ->  CentralControl: Check safety status (fire)
+activate WebAPP
 activate  CentralControl
-APP ->  CentralControl: Check battery status
-APP ->  CentralControl: Check consumption vs production balance
-APP ->  CentralControl: Check efficiency
-CentralControl --> APP: TURN ON/OFF (according to the requirements)
+WebAPP ->  CentralControl: Check battery status
+WebAPP ->  CentralControl: Check consumption vs production balance
+WebAPP ->  CentralControl: Check efficiency
+CentralControl --> WebAPP: TURN ON/OFF (according to the requirements)
 activate Customer
-APP-> Customer: Message "The Panel Solar was turn ON/OFF to maximize self-conseumption"
+WebAPP -> Customer: Message "The Panel Solar was turn ON/OFF to maximize self-consumption"
 deactivate Customer
-deactivate APP 
+deactivateWebAPP
 deactivate CentralControl
 @enduml
-------------------------------------------------------------------------------------------------
-Class Diagram
+
+__________________________________________________________________________________________________________________
+CLASS DIAGRAM
 code:
 @startuml
 !theme mars
