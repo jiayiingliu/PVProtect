@@ -312,12 +312,14 @@ deactivate CentralControl
 __________________________________________________________________________________________________________________
 CLASS DIAGRAM
 code:
+
 @startuml
 !theme mars
 namespace system.WebServer {
 
 class PublicServerEntrance{
  + CONST: ReceiveData
+ + sendData(data:string): string
 }
 
 class WebServerManager{
@@ -425,11 +427,11 @@ Battery "*" <--o "1" DataGather : aggregation
 ElectricSensor "1" <--o "1" DataGather : aggregation
 PanelController "1" <.. "1" ServerProxy
 PublicServerEntrance "1" ..> "1" ServerProxy
-PublicServerEntrance "*" -.-> "1" Database
+PublicServerEntrance "1" -.-> "1" Database: send info
 WebServerManager "1" o--> "1" UserInterface : aggregation
 WebServerManager "1" o-- "1" Database : aggregation
 WebServerManager "1" o-- "1" Computations : aggregation
-
+PublicServerEntrance "1" --* "1" WebServerManager
 }
 @enduml
 
